@@ -1,84 +1,61 @@
 import React, { useEffect } from 'react';
-import { View, Text } from 'react-native';
-import notifee, { AndroidImportance, EventType, TimestampTrigger, TriggerType } from '@notifee/react-native';
+import { View, Text, Alert } from 'react-native';
+import notifee, { EventType } from '@notifee/react-native';
 import { styles } from './styles';
 import { Button } from '../../components/Button';
+import { displayNotification } from '../../notifications/displayNotification';
+import { updateNotification } from '../../notifications/updateNotification';
+import { scheduleNotification } from '../../notifications/scheduleNotification';
+import { cancelNotification } from '../../notifications/cancelNotification';
 
 export function Home() {
-  async function createChannelId() {
 
-    const channelId = await notifee.createChannel({
-      id: 'teste',
-      name: 'sales',
-      vibration: true,
-      importance: AndroidImportance.HIGH,
-    })
-
-    return channelId;
+  async function sendNotification() {
+    await displayNotification
+      (
+        7,
+        'Ola <strong> Marcooo! </strong>  👩🏽‍🚀 ',
+        'Essa é a primeira <span style="color: red">notificação.</span>',
+      );
   }
 
-
-  async function displayNotification() {
-    await notifee.requestPermission();
-
-    const channelId = await createChannelId();
-    await notifee.displayNotification({
-      id: '7',
-      title: 'Ola <strong> Marcooo! </strong>  👩🏽‍🚀 ',
-      body: 'Essa é a primeira <span style="color: red">notificação.</span>',
-      android: { channelId }
-    });
+  async function existingUpdateNotification() {
+    await updateNotification
+      (
+        7,
+        'Ola <strong> Marco! </strong>  👩🏽‍🚀 ',
+        'Essa <span style="color: red">notificação.</span> foi atualiza!',
+      )
   }
 
-  async function updateNotification() {
-    await notifee.requestPermission();
-    const channelId = await createChannelId();
-    await notifee.displayNotification({
-      id: '7',
-      title: 'Ola <strong> Marco! </strong>  👩🏽‍🚀 ',
-      body: 'Essa <span style="color: red">notificação.</span> foi atualiza!',
-      android: { channelId }
-    })
+  async function cancelOneNotification() {
+    await cancelNotification(7);
   }
 
-  async function cancelNotification() {
-    await notifee.cancelNotification('7');
-  }
-
-  async function scheduleNotification() {
-    const date = new Date(Date.now());
-
-    date.setMinutes(date.getMinutes() + 1);
-
-    const channelId = await createChannelId();
-
-    const trigger: TimestampTrigger = {
-      type: TriggerType.TIMESTAMP,
-      timestamp: date.getTime()
-    }
-
-    await notifee.createTriggerNotification({
-      title: 'Notificação Agendada!',
-      body: 'Essa é uma notificação agendada',
-      android: {
-        channelId: channelId,
-        importance: AndroidImportance.HIGH
-      }
-    }, trigger);
+  async function toScheduleNotification() {
+    await scheduleNotification
+      (
+        'Notificação Agendada!',
+        'Essa notificação foi agendada para 1 minuto!',
+        1
+      )
   }
 
   function listScheduleNotification() {
-    notifee.getTriggerNotificationIds().then(ids => console.log(ids))
+    notifee.getTriggerNotificationIds()
+      .then(ids =>
+        Alert.alert(ids.length ? 'Notificações agendadas : ' + ids.length : 'Nenhuma notificação agendada')
+      )
   }
 
   useEffect(() => {
     return notifee.onForegroundEvent(({ type, detail }) => {
       switch (type) {
         case EventType.DISMISSED:
-          console.log("Usuario descartou a notificação!");
+          console.log("Usuário descartou a notificação!");
           break;
         case EventType.PRESS:
-          console.log("Usuario tocou na notificação!", detail.notification);
+          console.log("Usuário tocou na notificação!", detail.notification?.id);
       }
     })
   }, []);
@@ -94,10 +71,15 @@ export function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Local Notification</Text>
-      <Button title='Enviar Notificação' onPress={displayNotification} />
-      <Button title='Atualizar Notificação' onPress={updateNotification} />
-      <Button title='Cancelar Notificação' onPress={cancelNotification} />
-      <Button title='Notificação em 1 min' onPress={scheduleNotification} />
+
+      <Button title='Enviar Notificação' onPress={sendNotification} />
+
+      <Button title='Atualizar Notificação' onPress={existingUpdateNotification} />
+
+      <Button title='Cancelar Notificação' onPress={cancelOneNotification} />
+
+      <Button title='Notificação em 1 min' onPress={toScheduleNotification} />
+
       <Button title='Listar Notificações Agendadas' onPress={listScheduleNotification} />
     </View>
   );
