@@ -1,6 +1,8 @@
 # Notifee Notification 🔔📱
 
-localnotification-rn é um aplicativo móvel construído com React Native, Expo e TypeScript, projetado para enviar notificações locais para usuários.
+Este é um aplicativo móvel construído com React Native, Expo e TypeScript, projetado para enviar notificações locais para usuários.
+
+Nesta aplicação aprendi a utilizar a lib Notifee para fazer o "crud" nas notificações.
 
 ## Instalação
 
@@ -20,7 +22,7 @@ O localnotification-rn foi construído utilizando as seguintes tecnologias:
 - Expo
 - TypeScript
 - @notifee/react-native
-- expo-status-bar
+- expo-build-properties
 
 ## Licença
 
