@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text } from 'react-native';
 import notifee, { AndroidImportance, EventType, TimestampTrigger, TriggerType } from '@notifee/react-native';
 import { styles } from './styles';
+import { Button } from '../../components/Button';
 
 export function Home() {
   async function createChannelId() {
@@ -35,7 +36,7 @@ export function Home() {
     await notifee.displayNotification({
       id: '7',
       title: 'Ola <strong> Marco! </strong>  👩🏽‍🚀 ',
-      body: 'Essa é a primeira <span style="color: red">notificação.</span>',
+      body: 'Essa <span style="color: red">notificação.</span> foi atualiza!',
       android: { channelId }
     })
   }
@@ -44,7 +45,7 @@ export function Home() {
     await notifee.cancelNotification('7');
   }
 
-  async function schedleNotification() {
+  async function scheduleNotification() {
     const date = new Date(Date.now());
 
     date.setMinutes(date.getMinutes() + 1);
@@ -66,7 +67,7 @@ export function Home() {
     }, trigger);
   }
 
-  function listSheduleNotification() {
+  function listScheduleNotification() {
     notifee.getTriggerNotificationIds().then(ids => console.log(ids))
   }
 
@@ -85,19 +86,19 @@ export function Home() {
   useEffect(() => {
     return notifee.onBackgroundEvent(async ({ type, detail }) => {
       if (type === EventType.PRESS) {
-        console.log("Usuario tocou na notificação!", detail.notification);
+        console.log("Usuário tocou na notificação!", detail.notification);
       }
     });
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Local Notification</Text>
+      <Text style={styles.title}>Local Notification</Text>
       <Button title='Enviar Notificação' onPress={displayNotification} />
       <Button title='Atualizar Notificação' onPress={updateNotification} />
       <Button title='Cancelar Notificação' onPress={cancelNotification} />
-      <Button title='Agendar Notificação' onPress={schedleNotification} />
-      <Button title='Listar Notificação Agendadas' onPress={listSheduleNotification} />
+      <Button title='Notificação em 1 min' onPress={scheduleNotification} />
+      <Button title='Listar Notificações Agendadas' onPress={listScheduleNotification} />
     </View>
   );
 }
