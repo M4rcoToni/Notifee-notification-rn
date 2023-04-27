@@ -4,7 +4,7 @@ Este é um aplicativo móvel construído com React Native, Expo e TypeScript, pr
 
 Nesta aplicação aprendi a utilizar a lib Notifee para fazer o "crud" nas notificações.
 
-<img src=".github/imgs/home.png" height="550"/>
+<img src=".github/imgs/home.png" height="550" /> <img src=".github/imgs/homegif.gif" height="550"/>
 
 ## Instalação
 
