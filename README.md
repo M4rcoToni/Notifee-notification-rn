@@ -29,3 +29,7 @@ O localnotification-rn foi construído utilizando as seguintes tecnologias:
 ## Licença
 
 Este projeto está licenciado sob a Licença MIT.
+
+<br></br>
+
+Projeto desenvolvido com 💜 por [M4rcotoni](https://github.com/m4rcotoni)
