@@ -1,6 +1,6 @@
 # Notifee Notification 🔔📱
 
-Este é um aplicativo móvel construído com React Native, Expo e TypeScript, projetado para enviar notificações locais para usuários.
+Este é um aplicativo desenvolvido com React Native, Expo e TypeScript, projetado para enviar notificações locais para usuários.
 
 Nesta aplicação aprendi a utilizar a lib Notifee para fazer o "crud" nas notificações.
 
